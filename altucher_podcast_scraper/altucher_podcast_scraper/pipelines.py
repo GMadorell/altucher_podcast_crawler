@@ -18,6 +18,18 @@ class PickOnlyAskPodcastsPipeline(object):
             return item
 
 
+class NameSimplifierPipeline(object):
+    def process_item(self, item, spider):
+        name = \
+            item["name"]\
+            .encode("ascii", "ignore")\
+            .strip("\n")\
+            .replace("?", "")\
+            .replace('"', "")
+
+        item["name"] = name
+        return item
+
 class DownloadPodcastsPipeline(object):
     def process_item(self, item, spider):
         link = item["download_link"]
@@ -25,7 +37,9 @@ class DownloadPodcastsPipeline(object):
         if not os.path.exists("download"):
             os.makedirs("download")
 
-        file_name = os.path.join("download", "{}.mp3".format(unicode(item["name"])))
+        name = item["name"].encode("ascii", "ignore").strip("\n")
+
+        file_name = os.path.join("download", "{}.mp3".format(name))
 
         if os.path.exists(file_name):
             raise DropItem("Already downloaded ({})".format(file_name))

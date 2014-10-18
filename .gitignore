@@ -1,6 +1,9 @@
 
-# Downloads folder
 download/
+
+items.json
+
+
 
 
 
@@ -62,4 +65,5 @@ docs/_build/
 
 # PyBuilder
 target/
+
 
