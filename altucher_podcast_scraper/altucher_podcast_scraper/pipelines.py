@@ -7,10 +7,10 @@
 import os
 import requests
 from scrapy.exceptions import DropItem
+import re
 
 
 class PickOnlyAskPodcastsPipeline(object):
-
     def process_item(self, item, spider):
         if "ask altucher" not in unicode(item["name"]).lower():
             raise DropItem("Not a ask podcast")
@@ -20,15 +20,26 @@ class PickOnlyAskPodcastsPipeline(object):
 
 class NameSimplifierPipeline(object):
     def process_item(self, item, spider):
+        # Bitches: http://stackoverflow.com/questions/6323296/python-remove-anything-that-is-not-a-letter-or-number
+
+        # --> 'thisisatest'
         name = \
-            item["name"]\
-            .encode("ascii", "ignore")\
-            .strip("\n")\
-            .replace("?", "")\
-            .replace('"', "")
+            item["name"] \
+                .encode("ascii", "ignore") \
+                .strip("\n") \
+                .replace("?", "") \
+                .replace('"', "") \
+                .replace(":", "")
+
+        name = re.sub("[^0-9a-zA-Z ]",    # Anything except 0..9, a..z and A..Z
+                      "",                # replaced with nothing
+                      name)
+
+        name = name.title()
 
         item["name"] = name
         return item
+
 
 class DownloadPodcastsPipeline(object):
     def process_item(self, item, spider):

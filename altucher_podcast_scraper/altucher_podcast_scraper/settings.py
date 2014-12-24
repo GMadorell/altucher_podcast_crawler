@@ -15,6 +15,7 @@ NEWSPIDER_MODULE = 'altucher_podcast_scraper.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'altucher_podcast_scraper (+http://www.yourdomain.com)'
-ITEM_PIPELINES = {'altucher_podcast_scraper.pipelines.PickOnlyAskPodcastsPipeline': 1,
+ITEM_PIPELINES = {#'altucher_podcast_scraper.pipelines.PickOnlyAskPodcastsPipeline': 1,
                   'altucher_podcast_scraper.pipelines.NameSimplifierPipeline': 2,
-                  'altucher_podcast_scraper.pipelines.DownloadPodcastsPipeline': 3}
+                  'altucher_podcast_scraper.pipelines.DownloadPodcastsPipeline': 3
+                  }
